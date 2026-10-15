@@ -10,10 +10,11 @@ apply plugin: 'kotlin-android'
 
 android {
     if (buildAsApplication) {
-        namespace "io.github.kichikuou.xsystem4ko"
+        namespace "io.github.kichikuou.xsystem4"
     }
     compileSdkVersion 34
     defaultConfig {
+        applicationId "io.github.kichikuou.xsystem4ko"
         minSdkVersion 21
         targetSdkVersion 34
         // So that stripReleaseDebugSymbols task works
