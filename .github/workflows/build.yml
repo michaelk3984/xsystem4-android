@@ -1,8 +1,6 @@
 name: Build
 on: [push, workflow_dispatch]
 
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,21 +16,21 @@ jobs:
     - name: Install Deps
       run: sudo apt install ninja-build
 
-   - name: Apply CP949 patches
-     run: |
-       git -C xsystem4/subprojects/libsys4 apply "$GITHUB_WORKSPACE/patches/0002-libsys4-cp949-mode.patch"
-       git -C xsystem4 apply "$GITHUB_WORKSPACE/patches/0001-xsystem4-encoding-option.patch"
-       
+    - name: Apply CP949 patches
+      run: |
+        git -C xsystem4/subprojects/libsys4 apply "$GITHUB_WORKSPACE/patches/0002-libsys4-cp949-mode.patch"
+        git -C xsystem4 apply "$GITHUB_WORKSPACE/patches/0001-xsystem4-encoding-option.patch"
+
     - name: Native Build
       run: ANDROID_NDK_HOME=$ANDROID_NDK_LATEST_HOME ./build-shared-libs.sh
 
-       - name: App Build
-         run: |
-           cd project
-           JAVA_HOME=$JAVA_HOME_17_X64 ./gradlew assembleDebug
+    - name: App Build
+      run: |
+        cd project
+        JAVA_HOME=$JAVA_HOME_17_X64 ./gradlew assembleDebug
 
-       - name: Upload artifacts
-         uses: actions/upload-artifact@v7
-         with:
-           path: project/app/build/outputs/apk/debug/app-debug.apk
-           archive: false
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v7
+      with:
+        path: project/app/build/outputs/apk/debug/app-debug.apk
+        archive: false
