@@ -1,0 +1,21 @@
+diff --git a/src/system4.c b/src/system4.c
+index 452f168..ff1b787 100644
+--- a/src/system4.c
++++ b/src/system4.c
+@@ -200,6 +200,16 @@ static void read_user_config_file(const char *path, const char *basedir)
+ 						ini_string(&ini[i])->text);
+ 				config.msgskip_delay = 0;
+ 			}
++		} else if (!strcmp(ini[i].name->text, "encoding")) {
++			// "cp949" switches text decoding from Shift-JIS to CP949 (Korean)
++			const char *enc = ini_string(&ini[i])->text;
++			if (!strcasecmp(enc, "cp949")) {
++				sjis_cp949 = true;
++			} else if (!strcasecmp(enc, "sjis") || !strcasecmp(enc, "cp932")) {
++				sjis_cp949 = false;
++			} else {
++				WARNING("Invalid value for encoding in config: \"%s\"", enc);
++			}
+ 		} else if (!strcmp(ini[i].name->text, "save-folder")) {
+ 			free(config.save_dir);
+ 			config.save_dir = user_config_path(&ini[i], basedir);
